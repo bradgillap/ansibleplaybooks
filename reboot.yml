@@ -1,3 +1,5 @@
-- 
-  ansible.builtin.reboot:
-  name: "Unconditionally reboot the machine with all defaults"
+- hosts: all
+  become: yes
+  tasks:
+    - name: "Install latest version of nginx on Rocky Linux Node"
+      ansible.builtin.shell: reboot
