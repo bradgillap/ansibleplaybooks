@@ -1,6 +1,4 @@
---- 
 - 
   apt: 
     autoremove: true
-    purge: true
-  name: "Clean unwanted olderstuff"
+  name: "Remove dependencies that are no longer required"
