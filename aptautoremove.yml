@@ -1,4 +1,7 @@
-- 
-  apt: 
-    autoremove: true
-  name: "Remove dependencies that are no longer required"
+  become: true
+  hosts: all
+  tasks: 
+    - 
+      apt: 
+        autoremove: true
+        name: "Remove dependencies that are no longer required"

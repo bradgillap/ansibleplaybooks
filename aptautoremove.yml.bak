@@ -1,6 +1,0 @@
---- 
-- 
-  apt: 
-    autoremove: true
-    purge: true
-  name: "Clean unwanted olderstuff"
