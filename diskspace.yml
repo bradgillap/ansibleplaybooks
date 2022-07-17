@@ -1,0 +1,8 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: "Check disk space"
+      command: df -h
+      register: space
+    - debug:
+        var: space.stdout_lines
