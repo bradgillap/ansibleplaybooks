@@ -1,0 +1,13 @@
+--- 
+- 
+  async: 1
+  name: "Reboot the machine"
+  poll: 0
+  shell: "sleep 5 && reboot"
+- 
+  name: "Wait for the machine to come back online"
+  wait_for_connection: 
+    connect_timeout: 60
+    delay: 5
+    sleep: 5
+    timeout: 300
