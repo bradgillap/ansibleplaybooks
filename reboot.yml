@@ -1,5 +1,5 @@
 - hosts: all
   become: yes
   tasks:
-    - name: "Install latest version of nginx on Rocky Linux Node"
+    - name: "rebooting"
       ansible.builtin.shell: reboot

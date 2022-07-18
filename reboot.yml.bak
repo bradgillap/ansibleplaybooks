@@ -1,4 +1,0 @@
-- name: reboot machines
-  tasks:  
-  ansible.builtin.reboot:
-  name: "Unconditionally reboot the machine with all defaults"

@@ -1,0 +1,6 @@
+- name: Uncomment configuration
+  replace:
+    path: /etc/nginx/nginx.conf
+    regexp: '#(\s+)server_tokens'
+    replace: 'server_tokens'
+    backup: yes
