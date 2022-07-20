@@ -1,5 +1,6 @@
-- hosts: all
+- hosts: "*"
   become: yes
   tasks:
-    - name: "rebooting"
-      ansible.builtin.shell: reboot
+    - name: Reboot a slow machine that might have lots of updates to apply
+      reboot:
+        reboot_timeout: 3600
