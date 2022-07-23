@@ -1,6 +1,8 @@
-hosts: all
-- name: Install the package "qemu-guest-agent"
-  apt:
-    name: qemu-guest-agent
-    state: present
-      
+- 
+  become: true
+  hosts: all
+  tasks: 
+    - 
+      apt: 
+        name: qemu-guest-agent
+        state: true
