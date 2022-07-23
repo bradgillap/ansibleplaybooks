@@ -1,10 +1,5 @@
--
-  become: true
-  hosts: all
-  tasks:
-    -name: install qmeu-guest-agent
-      apt:
-        name: qemu-guest-agent
-        state: present
-        update_cache: true
+- name: Install the package "qemu-guest-agent"
+  apt:
+    name: qemu-guest-agent
+    state: present
       
