@@ -1,3 +1,4 @@
+hosts: all
 - name: Install the package "qemu-guest-agent"
   apt:
     name: qemu-guest-agent
