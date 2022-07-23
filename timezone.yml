@@ -1,5 +1,5 @@
 - name: Set timezone and configure timesyncd
-  hosts: "*"
+  hosts: all
   become: yes
   tasks:
     community.general.timezone:
