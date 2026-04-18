@@ -1,0 +1,30 @@
+---
+- name: Enforce Unattended Upgrades
+  hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Ensure unattended-upgrades is installed
+      ansible.builtin.apt:
+        name: unattended-upgrades
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Ensure 20auto-upgrades configuration is set to ENABLED
+      ansible.builtin.copy:
+        dest: /etc/apt/apt.conf.d/20auto-upgrades
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          APT::Periodic::Update-Package-Lists "1";
+          APT::Periodic::Unattended-Upgrade "1";
+      when: ansible_os_family == "Debian"
+
+    - name: Verify the service is enabled and running
+      ansible.builtin.systemd:
+        name: unattended-upgrades
+        enabled: yes
+        state: started
+      when: ansible_os_family == "Debian"
