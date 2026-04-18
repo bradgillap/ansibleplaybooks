@@ -2,7 +2,6 @@
 - name: Standard Infrastructure Maintenance
   hosts: all
   become: true
-  # This is the secret sauce to bypass whiptail/prompts
   environment:
     DEBIAN_FRONTEND: noninteractive
     UCF_FORCE_CONFOLD: "true"
@@ -11,21 +10,23 @@
     - name: Run apt update and upgrade
       ansible.builtin.apt:
         update_cache: yes
-        upgrade: dist  # 'dist' is better for keeping dependencies in sync
-        cache_valid_time: 3600 # 1 hour is safer than 24h for maintenance runs
+        upgrade: dist
+        cache_valid_time: 3600
         dpkg_options: 'force-confold,force-confdef'
+      register: apt_output  # This captures the result
 
-    - name: Remove redundant packages (cleanup)
+    - name: Show the upgraded packages
+      ansible.builtin.debug:
+        msg: "{{ apt_output.stdout_lines }}"
+      when: apt_output.changed  # Only show if something actually happened
+
+    - name: Remove redundant packages
       ansible.builtin.apt:
         autoremove: yes
         purge: yes
+      register: autoremove_output
 
-    - name: Check if a reboot is required
-      ansible.builtin.stat:
-        path: /var/run/reboot-required
-      register: reboot_required_file
-
-    - name: Report reboot status
+    - name: Show cleanup details
       ansible.builtin.debug:
-        msg: "Container {{ inventory_hostname }} requires a reboot for updates."
-      when: reboot_required_file.stat.exists
+        msg: "{{ autoremove_output.stdout_lines }}"
+      when: autoremove_output.changed
