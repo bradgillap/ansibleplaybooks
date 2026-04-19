@@ -1,5 +1,4 @@
----
-- name: Comprehensive Timezone and NTP Configuration
+- name: Comprehensive Timezone Configuration
   hosts: all
   become: yes
   vars:
@@ -9,37 +8,25 @@
     - name: Set system timezone
       community.general.timezone:
         name: "{{ selected_timezone }}"
-      register: tz_change
-
-    - name: Ensure the timezone is symlinked correctly (/etc/localtime)
-      file:
-        src: "/usr/share/zoneinfo/{{ selected_timezone }}"
-        dest: /etc/localtime
-        state: link
-        force: yes
-
-    - name: Update /etc/timezone file (Legacy support)
-      copy:
-        content: "{{ selected_timezone }}\n"
-        dest: /etc/timezone
-        owner: root
-        group: root
-        mode: '0644'
 
     - name: Ensure systemd-timesyncd is installed
       package:
         name: systemd-timesyncd
         state: present
-      when: ansible_service_mgr == "systemd"
+      # Skip if it's a container that relies on the host for sync
+      when: ansible_virtualization_type != "lxc"
 
     - name: Enable and start systemd-timesyncd
       systemd:
         name: systemd-timesyncd
         enabled: yes
         state: started
-      when: ansible_service_mgr == "systemd"
+      when: ansible_virtualization_type != "lxc"
 
-    - name: Force hardware clock to UTC (Best practice for Proxmox)
+    - name: Force hardware clock to UTC (Skip on LXC)
       command: hwclock --systohc --utc
+      when: 
+        - ansible_virtualization_type != "lxc"
+        - ansible_virtualization_type != "container"
       changed_when: false
       ignore_errors: true
