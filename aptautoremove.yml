@@ -1,6 +1,0 @@
-- hosts: all
-  become: yes
-  tasks:
-    - name: "Remove dependencies no longer required"
-      apt:
-        autoremove: true
