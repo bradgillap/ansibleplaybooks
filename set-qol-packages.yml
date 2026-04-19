@@ -1,0 +1,36 @@
+---
+- name: Standardize Base Software Packages
+  hosts: all
+  become: yes
+  
+  tasks:
+    - name: Update apt cache (equivalent to apt update)
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600  # Only update if it hasn't been done in the last hour
+
+    - name: Install Sysadmin Essentials
+      package:
+        state: present
+        name:
+          # --- Quality of Life ---
+          - tmux
+          - htop
+          - tree
+          - git
+          - curl
+          - wget
+          - rsync
+          
+          # --- Networking & Troubleshooting ---
+          - net-tools    # for 'ifconfig' and 'netstat'
+          - iputils-ping
+          - dnsutils     # for 'nslookup' and 'dig'
+          - mtr-tiny     # great for checking latency between subnets
+          - nmap
+          
+          # --- System & Automation ---
+          - sudo
+          - unattended-upgrades
+          - apt-listchanges
+          - ca-certificates
