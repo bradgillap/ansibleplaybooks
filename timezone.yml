@@ -1,6 +1,45 @@
-- name: Set timezone and configure timesyncd
+---
+- name: Comprehensive Timezone and NTP Configuration
   hosts: all
   become: yes
+  vars:
+    selected_timezone: "America/Toronto"
+
   tasks:
-    community.general.timezone:
-      name: America/Toronto
+    - name: Set system timezone
+      community.general.timezone:
+        name: "{{ selected_timezone }}"
+      register: tz_change
+
+    - name: Ensure the timezone is symlinked correctly (/etc/localtime)
+      file:
+        src: "/usr/share/zoneinfo/{{ selected_timezone }}"
+        dest: /etc/localtime
+        state: link
+        force: yes
+
+    - name: Update /etc/timezone file (Legacy support)
+      copy:
+        content: "{{ selected_timezone }}\n"
+        dest: /etc/timezone
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Ensure systemd-timesyncd is installed
+      package:
+        name: systemd-timesyncd
+        state: present
+      when: ansible_service_mgr == "systemd"
+
+    - name: Enable and start systemd-timesyncd
+      systemd:
+        name: systemd-timesyncd
+        enabled: yes
+        state: started
+      when: ansible_service_mgr == "systemd"
+
+    - name: Force hardware clock to UTC (Best practice for Proxmox)
+      command: hwclock --systohc --utc
+      changed_when: false
+      ignore_errors: true
