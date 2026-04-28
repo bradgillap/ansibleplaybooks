@@ -3,17 +3,31 @@
   hosts: lxc_containers
   become: yes
   vars:
-    # Use the 'lookup' or simply reference the variable name 
-    # Semaphore passes them as extra-vars
-    api_id: "{{ PATCHMON_ID }}"
-    api_key: "{{ PATCHMON_KEY }}"
-    install_url: "http://patchmon.bastardgeek.internal:3000/api/v1/hosts/install"
+    # These will be populated by Semaphore's Environment Variables
+    # Accessing them via the 'env' lookup for maximum compatibility
+    api_id: "{{ lookup('env', 'PATCHMON_ID') }}"
+    api_key: "{{ lookup('env', 'PATCHMON_KEY') }}"
+    install_url: "{{ lookup('env', 'PATCHMON_URL') }}"
 
   tasks:
+    - name: Ensure curl is installed
+      package:
+        name: curl
+        state: present
+
     - name: Download and execute the agent installation script
       shell: |
         curl -sk "{{ install_url }}" \
         -H "X-API-ID: {{ api_id }}" \
         -H "X-API-KEY: {{ api_key }}" | sh
       args:
+        # Update this path if the agent binary is located elsewhere
         creates: /usr/bin/patchmon-agent
+
+    - name: Ensure the agent service is started and enabled
+      systemd:
+        name: patchmon-agent
+        state: started
+        enabled: yes
+      # Using ignore_errors in case the script doesn't use a standard systemd service name
+      ignore_errors: yes
