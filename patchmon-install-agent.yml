@@ -1,0 +1,19 @@
+---
+- name: Deploy Patchmon Agents
+  hosts: lxc_containers
+  become: yes
+  vars:
+    # Use the 'lookup' or simply reference the variable name 
+    # Semaphore passes them as extra-vars
+    api_id: "{{ PATCHMON_ID }}"
+    api_key: "{{ PATCHMON_KEY }}"
+    install_url: "http://patchmon.bastardgeek.internal:3000/api/v1/hosts/install"
+
+  tasks:
+    - name: Download and execute the agent installation script
+      shell: |
+        curl -sk "{{ install_url }}" \
+        -H "X-API-ID: {{ api_id }}" \
+        -H "X-API-KEY: {{ api_key }}" | sh
+      args:
+        creates: /usr/bin/patchmon-agent
