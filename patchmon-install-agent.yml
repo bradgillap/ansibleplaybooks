@@ -3,8 +3,7 @@
   hosts: all
   become: yes
   vars:
-    # These will be populated by Semaphore's Environment Variables
-    # Accessing them via the 'env' lookup for maximum compatibility
+    # Pulling these from your Semaphore environment variables
     api_id: "{{ lookup('env', 'PATCHMON_ID') }}"
     api_key: "{{ lookup('env', 'PATCHMON_KEY') }}"
     install_url: "{{ lookup('env', 'PATCHMON_URL') }}"
@@ -21,13 +20,6 @@
         -H "X-API-ID: {{ api_id }}" \
         -H "X-API-KEY: {{ api_key }}" | sh
       args:
-        # Update this path if the agent binary is located elsewhere
+        # This is a safety check to avoid running the script on 
+        # containers that already have the agent installed.
         creates: /usr/bin/patchmon-agent
-
-    - name: Ensure the agent service is started and enabled
-      systemd:
-        name: patchmon-agent
-        state: started
-        enabled: yes
-      # Using ignore_errors in case the script doesn't use a standard systemd service name
-      ignore_errors: yes
