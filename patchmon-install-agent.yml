@@ -1,6 +1,6 @@
 ---
 - name: Deploy Patchmon Agents
-  hosts: lxc_containers
+  hosts: all
   become: yes
   vars:
     # These will be populated by Semaphore's Environment Variables
