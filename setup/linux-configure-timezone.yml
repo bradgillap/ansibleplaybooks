@@ -1,5 +1,5 @@
 ---
-# set-timezone.yml
+# linux-configure-timezone.yml
 # Configures the system timezone and enables NTP time synchronization.
 # Skips time-syncd and hardware clock tasks on LXC containers since they
 # inherit time settings from the host.

@@ -1,5 +1,5 @@
 ---
-# set-qol-packages.yml
+# deb-install-qol-packages.yml
 # Installs a standardized set of sysadmin and quality-of-life packages
 # across all hosts. Ensures consistent tooling for troubleshooting,
 # networking diagnostics, and system automation.

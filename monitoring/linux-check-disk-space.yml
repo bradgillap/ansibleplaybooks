@@ -1,5 +1,5 @@
 ---
-# diskspace.yml
+# linux-check-disk-space.yml
 # Reports disk usage across all hosts using df -h.
 # Useful for quick capacity checks during maintenance windows.
 - name: Check Disk Space

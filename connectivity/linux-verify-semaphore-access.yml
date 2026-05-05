@@ -1,5 +1,5 @@
 ---
-# test-connection.yml
+# linux-verify-semaphore-access.yml
 # Validates that Ansible Semaphore can successfully pull and execute
 # playbooks from the GitHub repository. Runs locally on the Semaphore
 # server without targeting any remote hosts.

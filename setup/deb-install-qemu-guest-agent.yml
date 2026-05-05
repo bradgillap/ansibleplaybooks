@@ -1,5 +1,5 @@
 ---
-# qemu-guest-agent.yml
+# deb-install-qemu-guest-agent.yml
 # Installs the QEMU guest agent on all hosts and ensures the service is running.
 # Required for Proxmox (and other QEMU-based hypervisors) to properly
 # communicate with VMs for graceful shutdowns, snapshots, and IP reporting.

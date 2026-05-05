@@ -1,5 +1,5 @@
 ---
-# validate-keys.yml
+# linux-deploy-ssh-keys.yml
 # Deploys SSH public keys to the root user's authorized_keys file
 # on all hosts. Requires the 'my_root_key' variable to be defined
 # (typically via Semaphore inventory or environment variables).

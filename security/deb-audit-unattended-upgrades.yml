@@ -1,5 +1,5 @@
 ---
-# audit-unattended-upgrades.yml
+# deb-audit-unattended-upgrades.yml
 # Audits whether unattended-upgrades is installed and enabled on Debian/Ubuntu hosts.
 # Reports the installation status and whether auto-upgrades are configured.
 - name: Audit Unattended Upgrades

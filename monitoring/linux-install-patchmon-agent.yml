@@ -1,5 +1,5 @@
 ---
-# patchmon-install-agent.yml
+# linux-install-patchmon-agent.yml
 # Deploys the Patchmon monitoring agent to all hosts.
 # Requires PATCHMON_ID, PATCHMON_KEY, and PATCHMON_URL environment variables
 # to be set (typically via Semaphore environment variables).

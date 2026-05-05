@@ -1,5 +1,5 @@
 ---
-# ping-lxcs.yml
+# linux-test-lxc-connectivity.yml
 # Tests basic connectivity to all LXC containers in the inventory.
 # Uses the Ansible ping module (not ICMP) to verify SSH access and
 # Python availability on the target hosts.

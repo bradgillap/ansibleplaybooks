@@ -1,5 +1,5 @@
 ---
-# aptupdate.yml
+# deb-update-cache.yml
 # Updates the APT package cache on all hosts.
 # Uses cache_valid_time to skip the update if it was done within the last 24 hours.
 - name: Update APT Cache
