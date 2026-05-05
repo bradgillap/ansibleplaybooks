@@ -12,24 +12,25 @@
   tasks:
     - name: Run apt update and upgrade
       ansible.builtin.apt:
-        update_cache: yes
+        update_cache: true
         upgrade: dist
         cache_valid_time: 3600
         dpkg_options: 'force-confold,force-confdef'
-      register: apt_output  # This captures the result
-
-    - name: Show the upgraded packages
-      ansible.builtin.debug:
-        msg: "{{ apt_output.stdout_lines }}"
-      when: apt_output.changed  # Only show if something actually happened
+      register: apt_output
+      notify: Show the upgraded packages
 
     - name: Remove redundant packages
       ansible.builtin.apt:
-        autoremove: yes
-        purge: yes
+        autoremove: true
+        purge: true
       register: autoremove_output
+      notify: Show cleanup details
+
+  handlers:
+    - name: Show the upgraded packages
+      ansible.builtin.debug:
+        msg: "{{ apt_output.stdout_lines }}"
 
     - name: Show cleanup details
       ansible.builtin.debug:
         msg: "{{ autoremove_output.stdout_lines }}"
-      when: autoremove_output.changed

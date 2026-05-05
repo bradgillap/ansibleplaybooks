@@ -13,4 +13,4 @@
         path: /etc/nginx/nginx.conf
         regexp: '#(\s+)server_tokens'
         replace: 'server_tokens'
-        backup: yes
+        backup: true

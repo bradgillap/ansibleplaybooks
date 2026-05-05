@@ -5,7 +5,7 @@
 # updates during the reboot process.
 - name: Reboot Hosts
   hosts: all
-  become: yes
+  become: true
   tasks:
     - name: Reboot a slow machine that might have lots of updates to apply
       ansible.builtin.reboot:

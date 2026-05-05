@@ -12,7 +12,7 @@
       ansible.builtin.apt:
         name: unattended-upgrades
         state: present
-        update_cache: yes
+        update_cache: true
       when: ansible_os_family == "Debian"
 
     - name: Ensure 20auto-upgrades configuration is set to ENABLED
@@ -29,6 +29,6 @@
     - name: Verify the service is enabled and running
       ansible.builtin.systemd:
         name: unattended-upgrades
-        enabled: yes
+        enabled: true
         state: started
       when: ansible_os_family == "Debian"

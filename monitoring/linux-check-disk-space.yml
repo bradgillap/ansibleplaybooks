@@ -4,7 +4,7 @@
 # Useful for quick capacity checks during maintenance windows.
 - name: Check Disk Space
   hosts: all
-  become: yes
+  become: true
   tasks:
     - name: Check disk space
       ansible.builtin.command: df -h

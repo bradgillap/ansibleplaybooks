@@ -3,3 +3,9 @@
 
 # Local plans and notes
 plans/
+
+# Python Linter
+.venv/
+
+#ansible
+.ansible/

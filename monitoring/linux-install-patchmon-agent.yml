@@ -6,7 +6,7 @@
 # Skips hosts that already have the agent installed at /usr/bin/patchmon-agent.
 - name: Deploy Patchmon Agents
   hosts: all
-  become: yes
+  become: true
   vars:
     # Pulling these from your Semaphore environment variables
     api_id: "{{ lookup('env', 'PATCHMON_ID') }}"
@@ -14,18 +14,24 @@
     install_url: "{{ lookup('env', 'PATCHMON_URL') }}"
 
   tasks:
-    - name: Ensure curl is installed
-      ansible.builtin.package:
-        name: curl
-        state: present
+    - name: Download the agent installation script
+      ansible.builtin.get_url:
+        url: "{{ install_url }}"
+        dest: /tmp/patchmon-install.sh
+        headers:
+          - "X-API-ID: {{ api_id }}"
+          - "X-API-KEY: {{ api_key }}"
+        validate_certs: false
+        mode: "0700"
+      no_log: true
 
-    - name: Download and execute the agent installation script
-      ansible.builtin.shell: |
-        curl -sk "{{ install_url }}" \
-        -H "X-API-ID: {{ api_id }}" \
-        -H "X-API-KEY: {{ api_key }}" | sh
+    - name: Execute the agent installation script
+      ansible.builtin.command: /tmp/patchmon-install.sh
       args:
-        # This is a safety check to avoid running the script on
-        # containers that already have the agent installed.
         creates: /usr/bin/patchmon-agent
       no_log: true
+
+    - name: Clean up the installation script
+      ansible.builtin.file:
+        path: /tmp/patchmon-install.sh
+        state: absent

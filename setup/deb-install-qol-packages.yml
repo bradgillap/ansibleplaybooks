@@ -5,12 +5,12 @@
 # networking diagnostics, and system automation.
 - name: Standardize Base Software Packages
   hosts: all
-  become: yes
+  become: true
 
   tasks:
     - name: Update apt cache (equivalent to apt update)
       ansible.builtin.apt:
-        update_cache: yes
+        update_cache: true
         cache_valid_time: 3600  # Only update if older than 1 hour
 
     - name: Install Sysadmin Essentials
