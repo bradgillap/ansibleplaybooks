@@ -1,0 +1,12 @@
+---
+# test-connection.yml
+# Validates that Ansible Semaphore can successfully pull and execute
+# playbooks from the GitHub repository. Runs locally on the Semaphore
+# server without targeting any remote hosts.
+- name: Verify Semaphore Access
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Print Success
+      ansible.builtin.debug:
+        msg: "Semaphore successfully pulled this playbook from GitHub!"

@@ -1,0 +1,12 @@
+---
+# aptupdate.yml
+# Updates the APT package cache on all hosts.
+# Uses cache_valid_time to skip the update if it was done within the last 24 hours.
+- name: Update APT Cache
+  hosts: all
+  become: true
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        cache_valid_time: 86400
+        update_cache: true

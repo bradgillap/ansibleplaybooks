@@ -1,4 +1,9 @@
 ---
+# patchmon-install-agent.yml
+# Deploys the Patchmon monitoring agent to all hosts.
+# Requires PATCHMON_ID, PATCHMON_KEY, and PATCHMON_URL environment variables
+# to be set (typically via Semaphore environment variables).
+# Skips hosts that already have the agent installed at /usr/bin/patchmon-agent.
 - name: Deploy Patchmon Agents
   hosts: all
   become: yes
@@ -10,16 +15,17 @@
 
   tasks:
     - name: Ensure curl is installed
-      package:
+      ansible.builtin.package:
         name: curl
         state: present
 
     - name: Download and execute the agent installation script
-      shell: |
+      ansible.builtin.shell: |
         curl -sk "{{ install_url }}" \
         -H "X-API-ID: {{ api_id }}" \
         -H "X-API-KEY: {{ api_key }}" | sh
       args:
-        # This is a safety check to avoid running the script on 
+        # This is a safety check to avoid running the script on
         # containers that already have the agent installed.
         creates: /usr/bin/patchmon-agent
+      no_log: true

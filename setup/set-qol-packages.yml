@@ -1,16 +1,20 @@
 ---
+# set-qol-packages.yml
+# Installs a standardized set of sysadmin and quality-of-life packages
+# across all hosts. Ensures consistent tooling for troubleshooting,
+# networking diagnostics, and system automation.
 - name: Standardize Base Software Packages
   hosts: all
   become: yes
-  
+
   tasks:
     - name: Update apt cache (equivalent to apt update)
-      apt:
+      ansible.builtin.apt:
         update_cache: yes
-        cache_valid_time: 3600  # Only update if it hasn't been done in the last hour
+        cache_valid_time: 3600  # Only update if older than 1 hour
 
     - name: Install Sysadmin Essentials
-      package:
+      ansible.builtin.package:
         state: present
         name:
           # --- Quality of Life ---
@@ -21,14 +25,14 @@
           - curl
           - wget
           - rsync
-          
+
           # --- Networking & Troubleshooting ---
           - net-tools    # for 'ifconfig' and 'netstat'
           - iputils-ping
           - dnsutils     # for 'nslookup' and 'dig'
           - mtr-tiny     # great for checking latency between subnets
           - nmap
-          
+
           # --- System & Automation ---
           - sudo
           - unattended-upgrades

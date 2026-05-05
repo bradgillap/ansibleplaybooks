@@ -1,4 +1,7 @@
 ---
+# audit-unattended-upgrades.yml
+# Audits whether unattended-upgrades is installed and enabled on Debian/Ubuntu hosts.
+# Reports the installation status and whether auto-upgrades are configured.
 - name: Audit Unattended Upgrades
   hosts: all
   become: true
@@ -11,11 +14,16 @@
 
     - name: Report installation status
       ansible.builtin.debug:
-        msg: "unattended-upgrades is {{ 'INSTALLED' if 'unattended-upgrades' in ansible_facts.packages else 'MISSING' }}"
+        msg: >-
+          unattended-upgrades is
+          {{ 'INSTALLED' if 'unattended-upgrades' in ansible_facts.packages
+             else 'MISSING' }}
       when: ansible_os_family == "Debian"
 
     - name: Check if auto-upgrade is enabled in APT config
-      ansible.builtin.command: grep "APT::Periodic::Unattended-Upgrade \"1\";" /etc/apt/apt.conf.d/20auto-upgrades
+      ansible.builtin.command: >-
+        grep "APT::Periodic::Unattended-Upgrade \"1\";"
+        /etc/apt/apt.conf.d/20auto-upgrades
       register: upgrade_check
       failed_when: false
       changed_when: false
@@ -23,7 +31,9 @@
 
     - name: Final Status Summary
       ansible.builtin.set_fact:
-        upgrade_status: "{{ 'ENABLED' if upgrade_check.rc == 0 else 'DISABLED/MISSING CONFIG' }}"
+        upgrade_status: >-
+          {{ 'ENABLED' if upgrade_check.rc == 0
+             else 'DISABLED/MISSING CONFIG' }}
       when: ansible_os_family == "Debian"
 
     - name: Show final audit result

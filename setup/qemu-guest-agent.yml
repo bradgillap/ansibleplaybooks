@@ -1,0 +1,20 @@
+---
+# qemu-guest-agent.yml
+# Installs the QEMU guest agent on all hosts and ensures the service is running.
+# Required for Proxmox (and other QEMU-based hypervisors) to properly
+# communicate with VMs for graceful shutdowns, snapshots, and IP reporting.
+- name: Install QEMU Guest Agent
+  hosts: all
+  become: true
+  tasks:
+    - name: Install qemu-guest-agent
+      ansible.builtin.apt:
+        name: qemu-guest-agent
+        state: present
+        update_cache: yes
+
+    - name: Enable and start qemu-guest-agent
+      ansible.builtin.systemd:
+        name: qemu-guest-agent
+        enabled: yes
+        state: started

@@ -1,8 +1,0 @@
----
-- name: Verify Semaphore Access
-  hosts: localhost
-  gather_facts: false
-  tasks:
-    - name: Print Success
-      debug:
-        msg: "Semaphore successfully pulled this playbook from GitHub!"

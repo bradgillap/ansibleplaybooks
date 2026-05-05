@@ -1,0 +1,12 @@
+---
+# reboot.yml
+# Reboots all hosts and waits for them to come back online.
+# Uses a 1-hour timeout to accommodate slow shutdowns or systems applying
+# updates during the reboot process.
+- name: Reboot Hosts
+  hosts: all
+  become: yes
+  tasks:
+    - name: Reboot a slow machine that might have lots of updates to apply
+      ansible.builtin.reboot:
+        reboot_timeout: 3600

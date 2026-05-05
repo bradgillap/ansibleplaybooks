@@ -1,3 +1,8 @@
+---
+# set-timezone.yml
+# Configures the system timezone and enables NTP time synchronization.
+# Skips time-syncd and hardware clock tasks on LXC containers since they
+# inherit time settings from the host.
 - name: Comprehensive Timezone Configuration
   hosts: all
   become: yes
@@ -10,22 +15,22 @@
         name: "{{ selected_timezone }}"
 
     - name: Ensure systemd-timesyncd is installed
-      package:
+      ansible.builtin.package:
         name: systemd-timesyncd
         state: present
       # Skip if it's a container that relies on the host for sync
       when: ansible_virtualization_type != "lxc"
 
     - name: Enable and start systemd-timesyncd
-      systemd:
+      ansible.builtin.systemd:
         name: systemd-timesyncd
         enabled: yes
         state: started
       when: ansible_virtualization_type != "lxc"
 
     - name: Force hardware clock to UTC (Skip on LXC)
-      command: hwclock --systohc --utc
-      when: 
+      ansible.builtin.command: hwclock --systohc --utc
+      when:
         - ansible_virtualization_type != "lxc"
         - ansible_virtualization_type != "container"
       changed_when: false

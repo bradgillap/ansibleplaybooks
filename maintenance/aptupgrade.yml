@@ -1,4 +1,7 @@
 ---
+# aptupgrade.yml
+# Performs a full dist-upgrade on all hosts and removes orphaned packages.
+# Runs in non-interactive mode to avoid prompts during automated maintenance.
 - name: Standard Infrastructure Maintenance
   hosts: all
   become: true

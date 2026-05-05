@@ -1,8 +1,0 @@
-- name: Setup SSH keys
-  hosts: all
-  tasks:
-    - name: Add key to root
-      ansible.posix.authorized_key:
-        user: root
-        state: present
-        key: "{{ my_root_key }}"

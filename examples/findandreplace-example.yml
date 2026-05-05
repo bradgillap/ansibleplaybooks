@@ -1,0 +1,16 @@
+---
+# findandreplace-example.yml
+# Example playbook demonstrating the Ansible replace module.
+# Uncomments the 'server_tokens' directive in an nginx config file by
+# stripping the leading '#' comment character. Creates a backup before
+# making changes.
+- name: Uncomment Nginx Configuration
+  hosts: all
+  become: true
+  tasks:
+    - name: Uncomment server_tokens in nginx config
+      ansible.builtin.replace:
+        path: /etc/nginx/nginx.conf
+        regexp: '#(\s+)server_tokens'
+        replace: 'server_tokens'
+        backup: yes

@@ -1,9 +1,0 @@
-- 
-  become: true
-  hosts: all
-  tasks: 
-    - 
-      apt: 
-        cache_valid_time: 86400
-        update_cache: true
-        upgrade: true

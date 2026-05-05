@@ -1,9 +1,0 @@
-- 
-  become: true
-  hosts: all
-  tasks: 
-    -
-      apt:
-        name: qemu-guest-agent
-        update_cache: yes
-    

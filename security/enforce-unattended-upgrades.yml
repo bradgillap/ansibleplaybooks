@@ -1,4 +1,8 @@
 ---
+# enforce-unattended-upgrades.yml
+# Ensures unattended-upgrades is installed, configured, and running on
+# Debian/Ubuntu hosts. Writes the 20auto-upgrades config to enable automatic
+# security updates and verifies the systemd service is active.
 - name: Enforce Unattended Upgrades
   hosts: all
   become: true
